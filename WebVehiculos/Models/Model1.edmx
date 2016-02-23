@@ -1,0 +1,238 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="VehiculosLuisModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="VehiculosLuisModelStoreContainer">
+    <EntitySet Name="TipoVehiculo" EntityType="VehiculosLuisModel.Store.TipoVehiculo" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Vehiculo" EntityType="VehiculosLuisModel.Store.Vehiculo" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="UsuarioSet" EntityType="VehiculosLuisModel.Store.UsuarioSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="RolSet" EntityType="VehiculosLuisModel.Store.RolSet" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="FK_Vehiculo_TipoVehiculo" Association="VehiculosLuisModel.Store.FK_Vehiculo_TipoVehiculo">
+      <End Role="TipoVehiculo" EntitySet="TipoVehiculo" />
+      <End Role="Vehiculo" EntitySet="Vehiculo" />
+    </AssociationSet>
+    <AssociationSet Name="UsuarioRol" Association="VehiculosLuisModel.Store.UsuarioRol">
+      <End Role="Usuario" EntitySet="UsuarioSet" />
+      <End Role="Rol" EntitySet="RolSet" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="TipoVehiculo">
+    <Key>
+      <PropertyRef Name="idTipo" />
+    </Key>
+    <Property Name="idTipo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="nombre" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="descripcion" Type="nvarchar(max)" Nullable="true" />
+  </EntityType>
+  <EntityType Name="Vehiculo">
+    <Key>
+      <PropertyRef Name="idVehiculo" />
+    </Key>
+    <Property Name="idVehiculo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="idTipo" Type="int" Nullable="false" />
+    <Property Name="marca" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="modelo" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="matricula" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="precio" Type="decimal" Nullable="false" Precision="18" Scale="2" />
+  </EntityType>
+  <EntityType Name="UsuarioSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Nombre" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Apellidos" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Login" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Email" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Password" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="RolId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="RolSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Nombre" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_Vehiculo_TipoVehiculo">
+    <End Role="TipoVehiculo" Type="VehiculosLuisModel.Store.TipoVehiculo" Multiplicity="1" />
+    <End Role="Vehiculo" Type="VehiculosLuisModel.Store.Vehiculo" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TipoVehiculo">
+        <PropertyRef Name="idTipo" />
+      </Principal>
+      <Dependent Role="Vehiculo">
+        <PropertyRef Name="idTipo" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="UsuarioRol">
+    <End Role="Usuario" Type="VehiculosLuisModel.Store.UsuarioSet" Multiplicity="*" />
+    <End Role="Rol" Type="VehiculosLuisModel.Store.RolSet" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Rol">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Usuario">
+        <PropertyRef Name="RolId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="VehiculosLuisModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="TipoVehiculo">
+          <Key>
+            <PropertyRef Name="idTipo" />
+          </Key>
+          <Property Name="idTipo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="descripcion" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Vehiculo" Relationship="Self.FK_Vehiculo_TipoVehiculo" FromRole="TipoVehiculo" ToRole="Vehiculo" />
+        </EntityType>
+        <EntityType Name="Vehiculo">
+          <Key>
+            <PropertyRef Name="idVehiculo" />
+          </Key>
+          <Property Name="idVehiculo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idTipo" Type="Int32" Nullable="false" />
+          <Property Name="marca" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="modelo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="matricula" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="precio" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <NavigationProperty Name="TipoVehiculo" Relationship="Self.FK_Vehiculo_TipoVehiculo" FromRole="Vehiculo" ToRole="TipoVehiculo" />
+        </EntityType>
+        <Association Name="FK_Vehiculo_TipoVehiculo">
+          <End Role="TipoVehiculo" Type="Self.TipoVehiculo" Multiplicity="1" />
+          <End Role="Vehiculo" Type="Self.Vehiculo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoVehiculo">
+              <PropertyRef Name="idTipo" />
+            </Principal>
+            <Dependent Role="Vehiculo">
+              <PropertyRef Name="idTipo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="VehiculosLuisEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="TipoVehiculo" EntityType="Self.TipoVehiculo" />
+          <EntitySet Name="Vehiculo" EntityType="Self.Vehiculo" />
+          <AssociationSet Name="FK_Vehiculo_TipoVehiculo" Association="Self.FK_Vehiculo_TipoVehiculo">
+            <End Role="TipoVehiculo" EntitySet="TipoVehiculo" />
+            <End Role="Vehiculo" EntitySet="Vehiculo" />
+          </AssociationSet>
+          <EntitySet Name="UsuarioSet" EntityType="VehiculosLuisModel.Usuario" />
+          <EntitySet Name="RolSet" EntityType="VehiculosLuisModel.Rol" />
+          <AssociationSet Name="UsuarioRol" Association="VehiculosLuisModel.UsuarioRol">
+            <End Role="Usuario" EntitySet="UsuarioSet" />
+            <End Role="Rol" EntitySet="RolSet" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Usuario">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" Nullable="false" />
+          <Property Name="Apellidos" Type="String" Nullable="false" />
+          <Property Name="Login" Type="String" Nullable="false" />
+          <Property Name="Email" Type="String" Nullable="false" />
+          <Property Name="Password" Type="String" Nullable="false" />
+          <NavigationProperty Name="Rol" Relationship="VehiculosLuisModel.UsuarioRol" FromRole="Usuario" ToRole="Rol" />
+          <Property Name="RolId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Rol">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" Nullable="false" />
+          <NavigationProperty Name="Usuario" Relationship="VehiculosLuisModel.UsuarioRol" FromRole="Rol" ToRole="Usuario" />
+        </EntityType>
+        <Association Name="UsuarioRol">
+          <End Type="VehiculosLuisModel.Usuario" Role="Usuario" Multiplicity="*" />
+          <End Type="VehiculosLuisModel.Rol" Role="Rol" Multiplicity="1" />
+          <ReferentialConstraint>
+            <Principal Role="Rol">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Usuario">
+              <PropertyRef Name="RolId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="VehiculosLuisModelStoreContainer" CdmEntityContainer="VehiculosLuisEntities">
+    <EntitySetMapping Name="TipoVehiculo">
+      <EntityTypeMapping TypeName="IsTypeOf(VehiculosLuisModel.TipoVehiculo)">
+        <MappingFragment StoreEntitySet="TipoVehiculo">
+          <ScalarProperty Name="idTipo" ColumnName="idTipo" />
+          <ScalarProperty Name="nombre" ColumnName="nombre" />
+          <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Vehiculo">
+      <EntityTypeMapping TypeName="IsTypeOf(VehiculosLuisModel.Vehiculo)">
+        <MappingFragment StoreEntitySet="Vehiculo">
+          <ScalarProperty Name="idVehiculo" ColumnName="idVehiculo" />
+          <ScalarProperty Name="idTipo" ColumnName="idTipo" />
+          <ScalarProperty Name="marca" ColumnName="marca" />
+          <ScalarProperty Name="modelo" ColumnName="modelo" />
+          <ScalarProperty Name="matricula" ColumnName="matricula" />
+          <ScalarProperty Name="precio" ColumnName="precio" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UsuarioSet">
+      <EntityTypeMapping TypeName="IsTypeOf(VehiculosLuisModel.Usuario)">
+        <MappingFragment StoreEntitySet="UsuarioSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+          <ScalarProperty Name="Apellidos" ColumnName="Apellidos" />
+          <ScalarProperty Name="Login" ColumnName="Login" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+          <ScalarProperty Name="RolId" ColumnName="RolId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RolSet">
+      <EntityTypeMapping TypeName="IsTypeOf(VehiculosLuisModel.Rol)">
+        <MappingFragment StoreEntitySet="RolSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
